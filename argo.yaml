@@ -1,20 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: todo-app-argo
-  namespace: argocd
+  name: webapp
 spec:
-  project: default
+  destination:
+    name: ''
+    namespace: webapp
+    server: 'https://kubernetes.default.svc'
   source:
-    repoURL: https://github.com/vaseemkhan007/node-app-gitops-github/tree/main/kube_manifest/
+    path: gitops/kube_manifest
+    repoURL: 'https://github.com/vaseemkhan007/node-app-gitops-github'
     targetRevision: HEAD
-    path: manifest
-  destination: 
-    server: https://kubernetes.default.svc
-    namespace: myapp
+  sources: []
+  project: default
   syncPolicy:
-    syncOptions:
-    - CreateNamespace=true
     automated:
+      prune: false
       selfHeal: true
-      prune: true
+    syncOptions:
+      - CreateNamespace=true
